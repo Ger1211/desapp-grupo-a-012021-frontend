@@ -1,4 +1,4 @@
-# desapp-grupo-a-012021-frontend
+# desapp-grupo-a-012021-frontend [![Build Status](https://travis-ci.com/Ger1211/desapp-grupo-a-012021-frontend.svg?branch=main)](https://travis-ci.com/Ger1211/desapp-grupo-a-012021-frontend)
 
 ## Project setup
 ```
