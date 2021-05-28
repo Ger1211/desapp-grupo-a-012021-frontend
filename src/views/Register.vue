@@ -39,6 +39,7 @@
           v-model="confirmation"
           :state="confirmValid"
           class="mt-4"
+          @keyup.enter="register"
         ></b-form-input>
         <b-container class="mt-4">
           <b-row align-h="between">
@@ -54,6 +55,8 @@
 </template>
 
 <script>
+var bcrypt = require('bcryptjs');
+
 export default {
   name: "Register",
   data() {
@@ -67,8 +70,7 @@ export default {
   computed: {
     passValid() {
       if (this.password.length >= 8) {
-        let regex = /^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,}$/;
-        return regex.test(this.password);
+        return true;
       } else {
         return null;
       }
@@ -84,47 +86,56 @@ export default {
       }
     },
     userValid() {
-      if (!this.focus && this.username.length < 3) {
-        return false;
+      if (!this.focus) {
+        return this.username.length > 3;
       } else {
         return null;
       }
     },
+    encodedPassword() {
+      var salt = bcrypt.genSaltSync(10);
+      return bcrypt.hashSync(this.password, salt);
+    }
   },
   methods: {
     register() {
-      (async () => {
-        const rawResponse = await fetch(
-          "http://localhost:8989/api/users/registration",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username: this.username,
-              password: this.password,
-            }),
-          }
-        );
-      })()
-        .then(() => this.$router.push("/login"))
-        .then(() =>
-          this.makeToast("success", "Awesome", "Registration success")
-        )
-        .catch(() => this.makeToast("danger", "Sorry", "Registration fail"));
+      if (this.userValid && this.passValid && this.confirmValid) {
+        (async () => {
+          const rawResponse = await fetch(
+            "http://localhost:8989/api/registration",
+            {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                username: this.username,
+                password: this.encodedPassword,
+              }),
+            }
+          );
+        })()
+          .then(() => this.$router.push("/login"))
+          .then(() =>
+            this.makeToast("success", "Awesome", "Registration success")
+          )
+          .catch(() => this.makeToast("danger", "Sorry", "Registration fail"));
+      } else {
+        this.makeToast("danger", "Sorry", "Registration fail");
+      }
     },
     makeToast(variant, title, bodyMessage) {
       this.$bvToast.toast(bodyMessage, {
         title: title,
         variant: variant,
+        toaster: 'b-toaster-bottom-right',
         solid: true,
       });
     },
     login() {
       this.$router.push("/login");
-    },
+    }
   },
 };
 </script>

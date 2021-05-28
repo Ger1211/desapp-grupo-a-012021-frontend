@@ -7,6 +7,10 @@
 
     <b-navbar-nav class="ml-auto">
       <template v-if="this.$store.getters.token">
+        <b-avatar variant="primary"></b-avatar>
+        <span class="mr-2 mt-2 ml-2 resena-color-platform">{{
+          this.$store.getters.platform
+        }}</span>
         <b-nav-item class="resena-decoration-none" @click="logout"
           >Log Out</b-nav-item
         >
@@ -32,11 +36,15 @@ export default {
       this.$router.push("/login");
     },
     login() {
-      this.$router.push("/login");
+      if (this.$route.name !== "Login") {
+        this.$router.push("/login");
+      }
     },
     register() {
-      this.$router.push("/register");
-    }
+      if (this.$route.name !== "Register") {
+        this.$router.push("/register");
+      }
+    },
   },
 };
 </script>
@@ -49,5 +57,9 @@ export default {
 .resena-decoration-none a:active {
   color: #fff;
   text-decoration: none;
+}
+
+.resena-color-platform {
+  color: #fff;
 }
 </style>

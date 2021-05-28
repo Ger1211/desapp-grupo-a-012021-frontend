@@ -22,6 +22,7 @@
           required
           v-model="password"
           class="mt-4"
+          @keyup.enter="login"
         ></b-form-input>
         <b-container class="mt-4">
           <b-row align-h="between">
@@ -37,6 +38,8 @@
 </template>
 
 <script>
+var bcrypt = require('bcryptjs');
+
 export default {
   name: "Login",
   data() {
@@ -45,11 +48,17 @@ export default {
       password: "",
     };
   },
+  computed: {
+    encodedPassword() {
+      var salt = bcrypt.genSaltSync(10);
+      return bcrypt.hashSync(this.password, salt);
+    }
+  },
   methods: {
     login() {
       (async () => {
         const rawResponse = await fetch(
-          "http://localhost:8989/api/users/authentication",
+          "http://localhost:8989/api/authentication",
           {
             method: "POST",
             headers: {
@@ -64,6 +73,7 @@ export default {
         );
         const data = await rawResponse.json();
         this.$store.commit("updateToken", data.token);
+        this.$store.commit("updatePlatform", data.platform);
       })()
         .then(() => this.$router.push("/"))
         .then(() => this.makeToast("success", "Awesome", "Login success"))
@@ -73,6 +83,7 @@ export default {
       this.$bvToast.toast(bodyMessage, {
         title: title,
         variant: variant,
+        toaster: 'b-toaster-bottom-right',
         solid: true,
       });
     },
