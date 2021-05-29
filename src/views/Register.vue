@@ -43,10 +43,17 @@
         ></b-form-input>
         <b-container class="mt-4">
           <b-row align-h="between">
-            <b-button variant="outline-primary" @click="login"
-              >{{$t('sign-in', this.$store.getters.language)}}</b-button
-            >
-            <b-button variant="primary" @click="register">{{$t('register', this.$store.getters.language)}}</b-button>
+            <b-button variant="outline-primary" @click="login">{{
+              $t("sign-in", this.$store.getters.language)
+            }}</b-button>
+            <template v-if="spinner">
+              <b-spinner variant="primary" label="Spinning"></b-spinner>
+            </template>
+            <template v-else>
+              <b-button variant="primary" @click="register">{{
+                $t("register", this.$store.getters.language)
+              }}</b-button>
+            </template>
           </b-row>
         </b-container>
       </b-card>
@@ -55,7 +62,7 @@
 </template>
 
 <script>
-var bcrypt = require('bcryptjs');
+var bcrypt = require("bcryptjs");
 
 export default {
   name: "Register",
@@ -65,6 +72,7 @@ export default {
       password: "",
       confirmation: "",
       focus: true,
+      spinner: false
     };
   },
   computed: {
@@ -95,11 +103,12 @@ export default {
     encodedPassword() {
       var salt = bcrypt.genSaltSync(10);
       return bcrypt.hashSync(this.password, salt);
-    }
+    },
   },
   methods: {
     register() {
       if (this.userValid && this.passValid && this.confirmValid) {
+        this.spinner = true;
         (async () => {
           const rawResponse = await fetch(
             "http://localhost:8989/api/registration",
@@ -116,26 +125,43 @@ export default {
             }
           );
         })()
+          .then(() => this.spinner = false)
           .then(() => this.$router.push("/login"))
           .then(() =>
-            this.makeToast("success",this.$i18n.t("awesome", this.$store.getters.language), this.$i18n.t("registration-success", this.$store.getters.language))
+            this.makeToast(
+              "success",
+              this.$i18n.t("awesome", this.$store.getters.language),
+              this.$i18n.t("registration-success", this.$store.getters.language)
+            )
           )
-          .catch(() => this.makeToast("danger", this.$i18n.t("sorry", this.$store.getters.language), this.$i18n.t("registration-fail", this.$store.getters.language)));
+          .catch(() => {
+            this.spinner = false;
+            this.makeToast(
+              "danger",
+              this.$i18n.t("sorry", this.$store.getters.language),
+              this.$i18n.t("registration-fail", this.$store.getters.language)
+            )
+          }
+          );
       } else {
-        this.makeToast("danger",this.$i18n.t("sorry", this.$store.getters.language), this.$i18n.t("registration-fail", this.$store.getters.language));
+        this.makeToast(
+          "danger",
+          this.$i18n.t("sorry", this.$store.getters.language),
+          this.$i18n.t("registration-fail", this.$store.getters.language)
+        );
       }
     },
     makeToast(variant, title, bodyMessage) {
       this.$bvToast.toast(bodyMessage, {
         title: title,
         variant: variant,
-        toaster: 'b-toaster-bottom-right',
+        toaster: "b-toaster-bottom-right",
         solid: true,
       });
     },
     login() {
       this.$router.push("/login");
-    }
+    },
   },
 };
 </script>

@@ -29,9 +29,14 @@
             <b-button variant="outline-primary" @click="register">{{
               $t("sign-up", this.$store.getters.language)
             }}</b-button>
-            <b-button variant="primary" @click="login">{{
-              $t("login", this.$store.getters.language)
-            }}</b-button>
+            <template v-if="spinner">
+              <b-spinner variant="primary" label="Spinning"></b-spinner>
+            </template>
+            <template v-else>
+              <b-button variant="primary" @click="login">{{
+                $t("login", this.$store.getters.language)
+              }}</b-button>
+            </template>
           </b-row>
         </b-container>
       </b-card>
@@ -48,6 +53,7 @@ export default {
     return {
       username: "",
       password: "",
+      spinner: false,
     };
   },
   computed: {
@@ -58,6 +64,7 @@ export default {
   },
   methods: {
     login() {
+      this.spinner = true;
       (async () => {
         const rawResponse = await fetch(
           "http://localhost:8989/api/authentication",
@@ -77,6 +84,7 @@ export default {
         this.$store.commit("updateToken", data.token);
         this.$store.commit("updatePlatform", data.platform);
       })()
+        .then(() => this.spinner = false)
         .then(() => this.$router.push("/"))
         .then(() =>
           this.makeToast(
@@ -85,12 +93,14 @@ export default {
             this.$i18n.t("login-success", this.$store.getters.language)
           )
         )
-        .catch(() =>
+        .catch(() => {
+          this.spinner = false;
           this.makeToast(
             "danger",
             this.$i18n.t("sorry", this.$store.getters.language),
             this.$i18n.t("login-fail", this.$store.getters.language)
           )
+        }
         );
     },
     makeToast(variant, title, bodyMessage) {
