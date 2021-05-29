@@ -2,7 +2,7 @@
   <b-container>
     <b-col align="center">
       <b-card
-        title="Sign Up"
+        :title="$t('sign-up', this.$store.getters.language)"
         style="max-width: 20rem"
         align="center"
         class="mt-5"
@@ -10,7 +10,7 @@
         <b-form-input
           id="username"
           type="text"
-          placeholder="Username"
+          :placeholder="$t('username', this.$store.getters.language)"
           required
           :state="userValid"
           v-model="username"
@@ -25,7 +25,7 @@
         <b-form-input
           id="password"
           type="password"
-          placeholder="Password"
+          :placeholder="$t('password', this.$store.getters.language)"
           required
           v-model="password"
           :state="passValid"
@@ -34,7 +34,7 @@
         <b-form-input
           id="confirmation"
           type="password"
-          placeholder="Confirmation"
+          :placeholder="$t('confirmation', this.$store.getters.language)"
           required
           v-model="confirmation"
           :state="confirmValid"
@@ -44,9 +44,9 @@
         <b-container class="mt-4">
           <b-row align-h="between">
             <b-button variant="outline-primary" @click="login"
-              >Sign In</b-button
+              >{{$t('sign-in', this.$store.getters.language)}}</b-button
             >
-            <b-button variant="primary" @click="register">Register</b-button>
+            <b-button variant="primary" @click="register">{{$t('register', this.$store.getters.language)}}</b-button>
           </b-row>
         </b-container>
       </b-card>
@@ -118,11 +118,11 @@ export default {
         })()
           .then(() => this.$router.push("/login"))
           .then(() =>
-            this.makeToast("success", "Awesome", "Registration success")
+            this.makeToast("success",this.$i18n.t("awesome", this.$store.getters.language), this.$i18n.t("registration-success", this.$store.getters.language))
           )
-          .catch(() => this.makeToast("danger", "Sorry", "Registration fail"));
+          .catch(() => this.makeToast("danger", this.$i18n.t("sorry", this.$store.getters.language), this.$i18n.t("registration-fail", this.$store.getters.language)));
       } else {
-        this.makeToast("danger", "Sorry", "Registration fail");
+        this.makeToast("danger",this.$i18n.t("sorry", this.$store.getters.language), this.$i18n.t("registration-fail", this.$store.getters.language));
       }
     },
     makeToast(variant, title, bodyMessage) {

@@ -2,7 +2,7 @@
   <b-container>
     <b-col align="center">
       <b-card
-        title="Sign In"
+        :title="$t('sign-in', this.$store.getters.language)"
         style="max-width: 20rem"
         align="center"
         class="mt-5"
@@ -10,7 +10,7 @@
         <b-form-input
           id="username"
           type="text"
-          placeholder="Username"
+          :placeholder="$t('username', this.$store.getters.language)"
           required
           v-model="username"
           class="mt-4"
@@ -18,7 +18,7 @@
         <b-form-input
           id="password"
           type="password"
-          placeholder="Password"
+          :placeholder="$t('password', this.$store.getters.language)"
           required
           v-model="password"
           class="mt-4"
@@ -26,10 +26,12 @@
         ></b-form-input>
         <b-container class="mt-4">
           <b-row align-h="between">
-            <b-button variant="outline-primary" @click="register"
-              >Sign up</b-button
-            >
-            <b-button variant="primary" @click="login">Login</b-button>
+            <b-button variant="outline-primary" @click="register">{{
+              $t("sign-up", this.$store.getters.language)
+            }}</b-button>
+            <b-button variant="primary" @click="login">{{
+              $t("login", this.$store.getters.language)
+            }}</b-button>
           </b-row>
         </b-container>
       </b-card>
@@ -38,7 +40,7 @@
 </template>
 
 <script>
-var bcrypt = require('bcryptjs');
+var bcrypt = require("bcryptjs");
 
 export default {
   name: "Login",
@@ -52,7 +54,7 @@ export default {
     encodedPassword() {
       var salt = bcrypt.genSaltSync(10);
       return bcrypt.hashSync(this.password, salt);
-    }
+    },
   },
   methods: {
     login() {
@@ -76,14 +78,26 @@ export default {
         this.$store.commit("updatePlatform", data.platform);
       })()
         .then(() => this.$router.push("/"))
-        .then(() => this.makeToast("success", "Awesome", "Login success"))
-        .catch(() => this.makeToast("danger", "Sorry", "Login fail"));
+        .then(() =>
+          this.makeToast(
+            "success",
+            this.$i18n.t("awesome", this.$store.getters.language),
+            this.$i18n.t("login-success", this.$store.getters.language)
+          )
+        )
+        .catch(() =>
+          this.makeToast(
+            "danger",
+            this.$i18n.t("sorry", this.$store.getters.language),
+            this.$i18n.t("login-fail", this.$store.getters.language)
+          )
+        );
     },
     makeToast(variant, title, bodyMessage) {
       this.$bvToast.toast(bodyMessage, {
         title: title,
         variant: variant,
-        toaster: 'b-toaster-bottom-right',
+        toaster: "b-toaster-bottom-right",
         solid: true,
       });
     },

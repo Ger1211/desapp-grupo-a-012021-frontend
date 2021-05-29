@@ -5,7 +5,7 @@
         <b-container>
           <b-row>
             <b-col>
-              <b-input-group prepend="API Key" class="mt-3">
+              <b-input-group :prepend="$t('api-key', this.$store.getters.language)" class="mt-3">
                 <b-form-input
                   id="api-key"
                   v-model="this.$store.getters.apiKey"
@@ -34,7 +34,7 @@
                 ref="tooltip"
                 target="tooltip-copy"
               >
-                Copy to clipboard!
+                {{$t('copy', this.$store.getters.language)}}
               </b-tooltip>
             </b-col>
           </b-row>
@@ -44,12 +44,12 @@
             <b-col>
               <label for="resena-bill">
                 <h4>
-                  <b-badge href="#" variant="primary">Bill:</b-badge>
+                  <b-badge href="#" variant="primary">{{$t('bill', this.$store.getters.language)}}:</b-badge>
                 </h4>
               </label>
             </b-col>
-            <b-col cols="11">
-              <b-input-group size="md" prepend="$" append=".00">
+            <b-col cols="10">
+              <b-input-group size="md" :prepend="$t('money', this.$store.getters.language)" append=".00">
                 <b-form-input id="resena-bill" class="resena-bill" :disabled="true" v-model="bill"></b-form-input>
               </b-input-group>
             </b-col>

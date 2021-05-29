@@ -1,0 +1,20 @@
+{
+    "money": "U$S",
+    "bill": "Bill",
+    "copy": "Copy to Clipboard!",
+    "log-out": "Log Out",
+    "sign-in": "Sign In",
+    "sign-up": "Sign Up",
+    "login": "Login",
+    "register": "Register",
+    "username": "Username",
+    "password": "Password",
+    "confirmation": "Confirmation",
+    "api-key": "API Key",
+    "awesome": "Awesome",
+    "login-success": "Login success",
+    "sorry": "Sorry",
+    "login-fail": "Login fail",
+    "registration-success": "Registration success",
+    "registration-fail": "Registration fail"
+}

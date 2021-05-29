@@ -1,0 +1,20 @@
+{
+    "money": "$",
+    "bill": "Deuda",
+    "copy": "Copiado al Portapapeles!",
+    "log-out": "Salir",
+    "sign-in": "Ingreso",
+    "sign-up": "Registro",
+    "login": "Ingresar",
+    "register": "Registrarse",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "confirmation": "Confirmación",
+    "api-key": "Clave API",
+    "awesome": "Genial",
+    "login-success": "Ingreso exitoso",
+    "sorry": "Lo lamentamos",
+    "login-fail": "Ingreso fallido",
+    "registration-success": "Registro exitoso",
+    "registration-fail": "Registro fallido"
+}

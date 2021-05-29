@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     token: "",
     platform: "",
-    apiKey: ""
+    apiKey: "",
+    language: 'en'
   },
   mutations: {
     updateToken(state, newToken) {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
     },
     updateApiKey(state, newApiKey) {
       state.apiKey = newApiKey;
+    },
+    updateLanguage(state, newLanguage) {
+      state.language = newLanguage;
     }
   },
   getters: {
@@ -29,6 +33,9 @@ export default new Vuex.Store({
     },
     apiKey(state) {
       return state.apiKey;
+    },
+    language(state) {
+      return state.language;
     }
   }
 });

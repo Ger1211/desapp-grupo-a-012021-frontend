@@ -6,21 +6,25 @@
     </b-navbar-brand>
 
     <b-navbar-nav class="ml-auto">
+      <b-nav-item-dropdown :text="lang" class="resena-decoration-none mr-3">
+        <b-dropdown-item @click="setEn">EN</b-dropdown-item>
+        <b-dropdown-item @click="setEs">ES</b-dropdown-item>
+      </b-nav-item-dropdown>
       <template v-if="this.$store.getters.token">
         <b-avatar variant="primary"></b-avatar>
         <span class="mr-2 mt-2 ml-2 resena-color-platform">{{
           this.$store.getters.platform
         }}</span>
         <b-nav-item class="resena-decoration-none" @click="logout"
-          >Log Out</b-nav-item
+          >{{$t('log-out', this.$store.getters.language)}}</b-nav-item
         >
       </template>
       <template v-else>
         <b-nav-item class="resena-decoration-none" @click="login"
-          >Sign In</b-nav-item
+          >{{$t('sign-in', this.$store.getters.language)}}</b-nav-item
         >
         <b-nav-item class="resena-decoration-none" @click="register"
-          >Sign Up</b-nav-item
+          >{{$t('sign-up', this.$store.getters.language)}}</b-nav-item
         >
       </template>
     </b-navbar-nav>
@@ -29,6 +33,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      lang: "EN"
+    }
+  },
   name: "NavBar",
   methods: {
     logout() {
@@ -45,6 +54,14 @@ export default {
         this.$router.push("/register");
       }
     },
+    setEn() {
+      this.lang = 'EN';
+      this.$store.commit('updateLanguage', 'en');
+    },
+    setEs() {
+      this.lang = 'ES';
+      this.$store.commit('updateLanguage', 'es');
+    }
   },
 };
 </script>
