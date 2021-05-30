@@ -63,6 +63,7 @@
 
 <script>
 var bcrypt = require("bcryptjs");
+import axios from "axios";
 
 export default {
   name: "Register",
@@ -72,7 +73,7 @@ export default {
       password: "",
       confirmation: "",
       focus: true,
-      spinner: false
+      spinner: false,
     };
   },
   computed: {
@@ -109,23 +110,14 @@ export default {
     register() {
       if (this.userValid && this.passValid && this.confirmValid) {
         this.spinner = true;
-        (async () => {
-          const rawResponse = await fetch(
-            "http://localhost:8989/api/registration",
-            {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                username: this.username,
-                password: this.encodedPassword,
-              }),
-            }
-          );
-        })()
-          .then(() => this.spinner = false)
+        const body = {
+          username: this.username,
+          password: this.password,
+        };
+        axios
+          .post("registration", body)
+
+          .then(() => (this.spinner = false))
           .then(() => this.$router.push("/login"))
           .then(() =>
             this.makeToast(
@@ -140,9 +132,8 @@ export default {
               "danger",
               this.$i18n.t("sorry", this.$store.getters.language),
               this.$i18n.t("registration-fail", this.$store.getters.language)
-            )
-          }
-          );
+            );
+          });
       } else {
         this.makeToast(
           "danger",

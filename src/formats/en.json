@@ -16,5 +16,6 @@
     "sorry": "Sorry",
     "login-fail": "Login fail",
     "registration-success": "Registration success",
-    "registration-fail": "Registration fail"
+    "registration-fail": "Registration fail",
+    "api-key-fail": "Can not obtain API Key"
 }

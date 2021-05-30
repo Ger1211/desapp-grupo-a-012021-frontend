@@ -46,6 +46,7 @@
 
 <script>
 var bcrypt = require("bcryptjs");
+import axios from "axios";
 
 export default {
   name: "Login",
@@ -65,26 +66,17 @@ export default {
   methods: {
     login() {
       this.spinner = true;
-      (async () => {
-        const rawResponse = await fetch(
-          "http://localhost:8989/api/authentication",
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username: this.username,
-              password: this.password,
-            }),
-          }
-        );
-        const data = await rawResponse.json();
-        this.$store.commit("updateToken", data.token);
-        this.$store.commit("updatePlatform", data.platform);
-      })()
-        .then(() => this.spinner = false)
+      const body = {
+        username: this.username,
+        password: this.password,
+      };
+      axios
+        .post("authentication", body)
+        .then((response) => {
+          this.$store.commit("updateToken", response.data.token);
+          this.$store.commit("updatePlatform", response.data.platform);
+        })
+        .then(() => (this.spinner = false))
         .then(() => this.$router.push("/"))
         .then(() =>
           this.makeToast(
@@ -99,9 +91,8 @@ export default {
             "danger",
             this.$i18n.t("sorry", this.$store.getters.language),
             this.$i18n.t("login-fail", this.$store.getters.language)
-          )
-        }
-        );
+          );
+        });
     },
     makeToast(variant, title, bodyMessage) {
       this.$bvToast.toast(bodyMessage, {
