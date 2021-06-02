@@ -62,7 +62,7 @@
 </template>
 
 <script>
-var bcrypt = require("bcryptjs");
+let sha256 = require('js-sha256');
 import axios from "axios";
 
 export default {
@@ -102,8 +102,7 @@ export default {
       }
     },
     encodedPassword() {
-      var salt = bcrypt.genSaltSync(10);
-      return bcrypt.hashSync(this.password, salt);
+      return sha256(this.password);
     },
   },
   methods: {
@@ -112,7 +111,7 @@ export default {
         this.spinner = true;
         const body = {
           username: this.username,
-          password: this.password,
+          password: this.encodedPassword,
         };
         axios
           .post("registration", body)
