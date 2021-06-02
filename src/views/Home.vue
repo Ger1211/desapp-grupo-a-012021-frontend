@@ -14,31 +14,7 @@
                   v-model="this.$store.getters.apiKey"
                   :disabled="true"
                 ></b-form-input>
-                <b-input-group-append id="tooltip-copy">
-                  <b-button
-                    :variant="color"
-                    v-clipboard="this.$store.getters.apiKey"
-                    v-clipboard:success="copySucces"
-                    v-clipboard:error="copyError"
-                  >
-                    <template v-if="doCopy">
-                      <b-icon icon="clipboard-check"></b-icon>
-                    </template>
-                    <template v-else>
-                      <b-icon icon="clipboard"></b-icon>
-                    </template>
-                  </b-button>
-                </b-input-group-append>
               </b-input-group>
-
-              <b-tooltip
-                :disabled.sync="disabled"
-                :show.sync="show"
-                ref="tooltip"
-                target="tooltip-copy"
-              >
-                {{ $t("copy", this.$store.getters.language) }}
-              </b-tooltip>
             </b-col>
           </b-row>
         </b-container>
@@ -92,18 +68,6 @@ export default {
     this.findApiKey();
   },
   methods: {
-    copySucces() {
-      this.color = "success";
-      this.doCopy = true;
-      this.disabled = false;
-      this.show = true;
-    },
-    copyError() {
-      this.color = "danger";
-      this.doCopy = false;
-      this.disabled = true;
-      this.show = false;
-    },
     findApiKey() {
       if (this.$store.getters.token) {
         const headers = {
@@ -114,9 +78,7 @@ export default {
           },
         };
         axios
-          .get(
-            `platforms/${this.$store.getters.platform}`, headers
-          )
+          .get(`platforms/${this.$store.getters.platform}`, headers)
           .then((response) =>
             this.$store.commit("updateApiKey", response.data.apiKey)
           )
