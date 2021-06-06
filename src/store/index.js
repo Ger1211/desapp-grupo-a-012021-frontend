@@ -8,6 +8,9 @@ export default new Vuex.Store({
     token: "",
     platform: "",
     apiKey: "",
+    credits: 0,
+    requests: 0 ,
+    priceRequest: 0,
     language: 'en'
   },
   mutations: {
@@ -22,6 +25,15 @@ export default new Vuex.Store({
     },
     updateLanguage(state, newLanguage) {
       state.language = newLanguage;
+    },
+    updateCredits(state, newCredits) {
+      state.credits = newCredits;
+    },
+    updateRequests(state, newRequests) {
+      state.requests = newRequests;
+    },
+    updatePriceRequest(state, newPriceRequest) {
+      state.priceRequest = newPriceRequest;
     }
   },
   getters: {
@@ -36,6 +48,15 @@ export default new Vuex.Store({
     },
     language(state) {
       return state.language;
+    },
+    credits(state) {
+      return state.credits;
+    },
+    requests(state) {
+      return state.requests;
+    },
+    priceRequest(state) {
+      return state.priceRequest;
     }
   }
 });

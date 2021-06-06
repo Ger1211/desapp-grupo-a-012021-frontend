@@ -1,6 +1,6 @@
 {
     "money": "U$S",
-    "bill": "Bill",
+    "credit": "Credit",
     "log-out": "Log Out",
     "sign-in": "Sign In",
     "sign-up": "Sign Up",
@@ -16,5 +16,8 @@
     "login-fail": "Login fail",
     "registration-success": "Registration success",
     "registration-fail": "Registration fail",
-    "api-key-fail": "Can not obtain API Key"
+    "api-key-fail": "Can not obtain API Key",
+    "requests": "Requests",
+    "price-requests": "Price Per Request",
+    "ppr": "PpR"
 }

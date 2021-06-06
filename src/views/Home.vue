@@ -21,25 +21,72 @@
         <b-container>
           <b-row class="mt-4">
             <b-col>
-              <label for="resena-bill">
+              <label for="resena-credits">
                 <h4>
-                  <b-badge href="#" variant="primary"
-                    >{{ $t("bill", this.$store.getters.language) }}:</b-badge
+                  <b-badge variant="primary"
+                    >{{ $t("credit", this.$store.getters.language) }}:</b-badge
                   >
                 </h4>
               </label>
             </b-col>
-            <b-col cols="10">
+            <b-col cols="6" lg="10">
+              <b-input-group
+                size="md"
+                :prepend="$t('money', this.$store.getters.language)"
+              >
+                <b-form-input
+                  id="resena-credits"
+                  class="resena-credits"
+                  :disabled="true"
+                  v-model="this.$store.getters.credits"
+                ></b-form-input>
+              </b-input-group>
+            </b-col>
+          </b-row>
+        </b-container>
+        <b-container>
+          <b-row class="mt-4">
+            <b-col>
+              <label for="resena-request">
+                <h4>
+                  <b-badge variant="primary"
+                    >{{
+                      $t("requests", this.$store.getters.language)
+                    }}:</b-badge
+                  >
+                </h4>
+              </label>
+            </b-col>
+            <b-col cols="5" sm="4">
+              <b-form-input
+                id="resena-requests"
+                class="resena-requests"
+                :disabled="true"
+                v-model="this.$store.getters.requests"
+              ></b-form-input>
+            </b-col>
+            <b-col id="resena-ppr">
+              <label for="resena-price-requests">
+                <h4>
+                  <b-badge variant="primary"
+                    >{{
+                      $t("ppr", this.$store.getters.language)
+                    }}:</b-badge
+                  >
+                </h4>
+              </label>
+            </b-col>
+            <b-col cols="8" sm="3">
               <b-input-group
                 size="md"
                 :prepend="$t('money', this.$store.getters.language)"
                 append=".00"
               >
                 <b-form-input
-                  id="resena-bill"
-                  class="resena-bill"
+                  id="resena-price-requests"
+                  class="resena-price-requests"
                   :disabled="true"
-                  v-model="bill"
+                  v-model="this.$store.getters.priceRequest"
                 ></b-form-input>
               </b-input-group>
             </b-col>
@@ -47,6 +94,9 @@
         </b-container>
       </b-card>
     </b-col>
+  <b-tooltip target="resena-ppr" triggers="hover">
+    {{$t('price-requests', this.$store.getters.language)}}
+  </b-tooltip>
   </b-container>
 </template>
 
@@ -61,7 +111,6 @@ export default {
       doCopy: false,
       disabled: true,
       show: false,
-      bill: 0,
     };
   },
   mounted() {
@@ -79,9 +128,12 @@ export default {
         };
         axios
           .get(`platforms/${this.$store.getters.platform}`, headers)
-          .then((response) =>
-            this.$store.commit("updateApiKey", response.data.apiKey)
-          )
+          .then((response) => {
+            this.$store.commit("updateApiKey", response.data.apiKey);
+            this.$store.commit("updateCredits", response.data.credits);
+            this.$store.commit("updateRequests", response.data.requestsNumber);
+            this.$store.commit("updatePriceRequest", response.data.pricePerRequest);
+          })
           .catch(() =>
             this.makeToast(
               "danger",
@@ -103,7 +155,9 @@ export default {
 };
 </script>
 <style>
-.resena-bill {
+.resena-credits,
+.resena-requests,
+.resena-price-requests {
   text-align: right;
 }
 </style>

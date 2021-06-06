@@ -1,6 +1,6 @@
 {
     "money": "$",
-    "bill": "Deuda",
+    "credit": "Crédito",
     "log-out": "Salir",
     "sign-in": "Ingreso",
     "sign-up": "Registro",
@@ -16,5 +16,8 @@
     "login-fail": "Ingreso fallido",
     "registration-success": "Registro exitoso",
     "registration-fail": "Registro fallido",
-    "api-key-fail": "No pudimos obtener el API Key"
+    "api-key-fail": "No pudimos obtener el API Key",
+    "requests": "Peticiones",
+    "price-requests": "Precio por Petición",
+    "ppr": "PpP"
 }
