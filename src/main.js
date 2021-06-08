@@ -11,7 +11,7 @@ import es from './formats/es.json'
 import VueI18n from 'vue-i18n'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://localhost:8989/api/';
+axios.defaults.baseURL = 'https://resena-api.herokuapp.com/api/';
 
 
 Vue.config.productionTip = false
