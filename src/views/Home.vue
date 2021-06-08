@@ -131,7 +131,7 @@ export default {
           .then((response) => {
             this.$store.commit("updateApiKey", response.data.apiKey);
             this.$store.commit("updateCredits", response.data.credits);
-            this.$store.commit("updateRequests", response.data.requestsNumber);
+            this.$store.commit("updateRequests", response.data.processedRequests);
             this.$store.commit("updatePriceRequest", response.data.pricePerRequest);
           })
           .catch(() =>
