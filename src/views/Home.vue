@@ -1,7 +1,7 @@
 <template>
   <b-container>
-    <b-col align="center">
-      <b-card class="mt-5">
+    <b-col >
+      <b-card class="mt-5 resena-card-mobile">
         <b-container>
           <b-row>
             <b-col>
@@ -10,6 +10,7 @@
                 class="mt-3"
               >
                 <b-form-input
+                  class="resena-ellipsis"
                   id="api-key"
                   v-model="this.$store.getters.apiKey"
                   :disabled="true"
@@ -20,7 +21,7 @@
         </b-container>
         <b-container>
           <b-row class="mt-4">
-            <b-col>
+            <b-col cols="5" sm="3" md="2">
               <label for="resena-credits">
                 <h4>
                   <b-badge variant="primary"
@@ -29,7 +30,7 @@
                 </h4>
               </label>
             </b-col>
-            <b-col cols="6" lg="10">
+            <b-col cols="7" sm="9" md="10">
               <b-input-group
                 size="md"
                 :prepend="$t('money', this.$store.getters.language)"
@@ -46,7 +47,7 @@
         </b-container>
         <b-container>
           <b-row class="mt-4">
-            <b-col>
+            <b-col cols="5" sm="3" md="2">
               <label for="resena-request">
                 <h4>
                   <b-badge variant="primary"
@@ -57,7 +58,7 @@
                 </h4>
               </label>
             </b-col>
-            <b-col cols="5" sm="4">
+            <b-col cols="7" sm="3" md="4">
               <b-form-input
                 id="resena-requests"
                 class="resena-requests"
@@ -65,22 +66,19 @@
                 v-model="this.$store.getters.requests"
               ></b-form-input>
             </b-col>
-            <b-col id="resena-ppr">
+            <b-col cols="5" sm="2" md="2" class="resena-mt-mobile" id="resena-ppr">
               <label for="resena-price-requests">
                 <h4>
                   <b-badge variant="primary"
-                    >{{
-                      $t("ppr", this.$store.getters.language)
-                    }}:</b-badge
+                    >{{ $t("ppr", this.$store.getters.language) }}:</b-badge
                   >
                 </h4>
               </label>
             </b-col>
-            <b-col cols="8" sm="3">
+            <b-col cols="7" sm="4" md="4" class="resena-mt-mobile">
               <b-input-group
                 size="md"
                 :prepend="$t('money', this.$store.getters.language)"
-                append=".00"
               >
                 <b-form-input
                   id="resena-price-requests"
@@ -94,9 +92,9 @@
         </b-container>
       </b-card>
     </b-col>
-  <b-tooltip target="resena-ppr" triggers="hover">
-    {{$t('price-requests', this.$store.getters.language)}}
-  </b-tooltip>
+    <b-tooltip target="resena-ppr" triggers="hover">
+      {{ $t("price-requests", this.$store.getters.language) }}
+    </b-tooltip>
   </b-container>
 </template>
 
@@ -131,8 +129,14 @@ export default {
           .then((response) => {
             this.$store.commit("updateApiKey", response.data.apiKey);
             this.$store.commit("updateCredits", response.data.credits);
-            this.$store.commit("updateRequests", response.data.processedRequests);
-            this.$store.commit("updatePriceRequest", response.data.pricePerRequest);
+            this.$store.commit(
+              "updateRequests",
+              response.data.processedRequests
+            );
+            this.$store.commit(
+              "updatePriceRequest",
+              response.data.pricePerRequest
+            );
           })
           .catch(() =>
             this.makeToast(
@@ -159,5 +163,18 @@ export default {
 .resena-requests,
 .resena-price-requests {
   text-align: right;
+}
+@media only screen and (max-width: 575px) {
+  .resena-mt-mobile {
+    margin-top:8%;
+  }
+  .resena-card-mobile .card-body{
+    padding: 0.01rem;
+  }
+}
+@media only screen and (max-width: 483px) {
+  .resena-ellipsis {
+    text-overflow: ellipsis;
+  }
 }
 </style>
